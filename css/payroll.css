@@ -1,4 +1,4 @@
-<!--UC1-->
+/* UC-1 */
 body{
     margin: 0;
     height: 100%;
@@ -45,6 +45,7 @@ body{
     box-sizing: border-box;
 }
 
+/* UC-2 */
 .form-content{
     min-height: calc(100% - 80px);
     background-color: #f7f7f7;
@@ -105,6 +106,7 @@ label{
     resize: vertical;
 }
 
+/* UC-3 */
 .profile-radio-content{
     display: flex;
     flex-direction: row;
@@ -122,6 +124,7 @@ label{
     margin-left: 12px;
 }
 
+/* UC-4 */
 .label-text{
     min-width: 140px;
 }
@@ -133,6 +136,7 @@ label{
     font-family: Roboto;
 }
 
+/* UC-5 */
 select{
     padding: 10px;
     border: 1px solid #ccc;
@@ -144,6 +148,7 @@ select{
     background-color: transparent ;
 }
 
+/* UC-6 */
 .buttonParent{
     display: flex;
     margin-bottom: 10px;
@@ -165,6 +170,7 @@ select{
     border: 1px solid #707070;
     cursor: pointer;
     background-color: #f5f5f5;
+    border-radius: 4px;
 }
 
 .submitButton{
@@ -178,6 +184,7 @@ select{
     text-align: center;
 }
 
+/* UC-6 EXTENDED */
 @media only screen and (max-width:960px){
     .cancelButton{
         margin-left: 0px;
