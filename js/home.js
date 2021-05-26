@@ -27,6 +27,7 @@ const createInnerHTML = () => {
     document.querySelector('#table-display').innerHTML = innerHtml;
 }
 
+// UC-18
 const createEmployeePayrollJSON = () => {
     let empPayrollListLocal = [
         {
