@@ -61,7 +61,8 @@ const createEmployeePayroll = () => {
     employeePayrollData.salary = getInputValuesById('#salary');
     employeePayrollData.note = getInputValuesById('#notes');
     let date = getInputValuesById('#day') + " "+getInputValuesById('#month')+ " " + getInputValuesById('#year');
-    employeePayrollData.date=Date.parse(date);
+    employeePayrollData.startDate= new Date(Date.parse(date));
+    employeePayrollData.id= Date.parse(date);
     // console.log('Hello');
     alert(employeePayrollData.toString());
     return employeePayrollData;
@@ -71,8 +72,9 @@ const getSelectedValues = (propertyValue) => {
     let allItems = document.querySelectorAll(propertyValue);
     let selItems = [];
     allItems.forEach(item => {
-        if(item.checked)
+        if(item.checked){
             selItems.push(item.value);
+        }
     });
     return selItems;
 }
@@ -88,7 +90,7 @@ const getInputElementValue = (id) => {
 }
 
 // UC-13
-const reserForm = () => {
+const resetForm = () => {
     setValue('#name','');
     unsetSelectedValues('[name=profile]');
     unsetSelectedValues('[name=gender]');
