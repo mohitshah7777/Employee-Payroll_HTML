@@ -1,4 +1,5 @@
 // UC-17
+// UC-21
 let empPayrollList;
 window.addEventListener('DOMContentLoaded', (event) => {
     empPayrollList = getEmployeePayrollDataFromStorage();
@@ -57,3 +58,5 @@ const remove = (node) => {
     document.querySelector(".emp-count").textContent = empPayrollList.length;
     createInnerHTML();
 }
+
+//UC-21
