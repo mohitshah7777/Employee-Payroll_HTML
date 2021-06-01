@@ -8,10 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/payroll.css">
     <title>Employee Payroll</title>
-    <!-- UC9 -->
-    <script defer src="../js/EmployeePayroll.js"></script>
-    <!--UC8-->
-    <script defer src="../js/payroll.js"></script>
 </head>
 
 <body>
@@ -26,7 +22,7 @@
     </header>
     <!--UC2-->
     <div class="form-content">
-        <form class="form" action="#" onreset="resetForm()" onsubmit="save()">
+        <form class="form" action="#" onreset="resetForm()" onsubmit="save(event)">
             <div class="form-head">Employee Payroll Form</div>
             <div class="row-content">
                 <label class="label text" for="name">Name</label>
@@ -93,7 +89,7 @@
             <!--UC5-->
             <div class="row-content">
                 <label class="label text" for="startDate">Start Date</label>
-                <div>
+                <div id="date">
                 <select id="day" name="Day">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -142,6 +138,7 @@
                     <option value="December">December</option>
                 </select>
                 <select id="year" name="Year">
+                    <!-- <option value="2021">2021</option> -->
                     <option value="2020">2020</option>
                     <option value="2019">2019</option>
                     <option value="2018">2018</option>
@@ -165,6 +162,11 @@
             </div>
         </form>
     </div>
+        <!-- UC9 -->
+        <script defer src="../js/EmployeePayroll.js"></script>
+        <!--UC8-->
+        <script defer src="../js/payroll.js"></script>
+        <script defer src="../js/utility.js"></script>
 </body>
 
 </html>

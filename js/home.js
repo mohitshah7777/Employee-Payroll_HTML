@@ -48,15 +48,22 @@ const getEmployeePayrollDataFromStorage = () => {
 
 // UC-20
 const remove = (node) => {
-    let empPayrollData = empPayrollList.find(empData => empData._id == node.id);
-    if(!empPayrollData) return;
+    let empPayroll = empPayrollList.find(empData => empData._id == node.id);
+    if(!empPayroll) return;
     const index = empPayrollList
                     .map(empData => empData._id)
-                    .indexOf(empPayrollData._id);
+                    .indexOf(empPayroll._id);
     empPayrollList.splice(index,1);
     localStorage.setItem("EmployeePayrollList", JSON.stringify(empPayrollList));
     document.querySelector(".emp-count").textContent = empPayrollList.length;
     createInnerHTML();
 }
 
-//UC-21
+// UC-22
+const update = (node) => {
+    let empPayroll = empPayrollList.find(empData => empData._id == node.id)
+    if(!empPayroll) return;
+    localStorage.setItem('editEmp', JSON.stringify(empPayroll));
+    window.location.replace(site_properties.add_emp_payroll_page);
+
+}
