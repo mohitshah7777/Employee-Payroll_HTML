@@ -27,51 +27,22 @@ window.addEventListener('DOMContentLoaded', (event) => {
         output.textContent = salary.value;
     });
 
+    // const date = document.querySelector('#date');
+    // date.addEventListener('input', function() {
+    //     const startDate = new Date(Date.parse(getInputValuesById('#day')+" "+
+    //                             getInputValuesById('#month')+" "+
+    //                             getInputValuesById('#year')));
+    //     try{
+    //         (new EmployeePayrollData()).startDate = startDate;
+    //         setTextValue('.date-error'," ");
+    //     }catch(e){
+    //         setTextValue('.date-error', e);
+    //     }
+    // });
+
     checkForUpdate();
 });
 
-// UC-11
-const save = () => {
-    try{
-        let employeePayrollData = createEmployeePayroll();
-        createAndUpdateStorage(employeePayrollData);
-    }catch (e) {
-        return;
-    }
-}
-
-// UC-12
-function createAndUpdateStorage(employeePayrollData){
-    let employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrollList"));
-    if(employeePayrollList != undefined){
-        employeePayrollList.push(employeePayrollData);
-    }
-    else{
-        employeePayrollList = [employeePayrollData];
-    }
-    alert(employeePayrollList.toString());
-    localStorage.setItem("EmployeePayrollList", JSON.stringify(employeePayrollList));
-}
-
-const createEmployeePayroll = () => {
-    let employeePayrollData = new EmployeePayrollData();
-    try{
-        employeePayrollData.name = getInputValuesById('#name');
-    }catch(e){
-        setTextValue('.test-error', e);
-        throw e;
-    }
-    employeePayrollData.profilepic = getSelectedValues('[name=profile]').pop();
-    employeePayrollData.gender = getSelectedValues('[name=gender]').pop();
-    employeePayrollData.department = getSelectedValues('[name=department]');
-    employeePayrollData.salary = getInputValuesById('#salary');
-    employeePayrollData.note = getInputValuesById('#notes');
-    let date = getInputValuesById('#day') + " "+getInputValuesById('#month')+ " " + getInputValuesById('#year');
-    employeePayrollData.startDate= new Date(Date.parse(date));
-    employeePayrollData.id= Date.parse(date);
-    alert(employeePayrollData.toString());
-    return employeePayrollData;
-}
 
 // UC-21
 const checkForUpdate = () => {
@@ -97,6 +68,102 @@ const setForm = () => {
 
 }
 
+// UC-22
+const save = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    try{
+        setEmployeePayrollObject();
+        createAndUpdateStorage();
+        resetForm();
+    }catch (e) {
+        return;
+    }
+}
+
+function setEmployeePayrollObject(){
+    employeePayrollObj._name = getInputValuesById('#name');
+    employeePayrollObj._profilepic = getSelectedValues('[name=profile]').pop();
+    employeePayrollObj._gender = getSelectedValues('[name=gender]').pop();
+    employeePayrollObj._department = getSelectedValues('[name=department]');
+    employeePayrollObj._salary = getInputValuesById('#salary');
+    employeePayrollObj._note = getInputValuesById('#notes');
+    let date = getInputValuesById('#day')+" "+getInputValuesById('#month')+" "+getInputValuesById('#year');
+    employeePayrollObj._startDate = date; 
+}
+
+function createAndUpdateStorage(){
+    let employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrollList"));
+    if(employeePayrollList){
+        let empPayrollData = employeePayrollList.find(empData => empData._id == employeePayrollObj._id);
+        if (!empPayrollData){
+            employeePayrollList.push(createEmployeePayrollData());
+        }
+        else{
+            const index = employeePayrollList.map(empData => empData._id).indexOf(empPayrollData._id);
+            employeePayrollList.splice(index,1,createEmployeePayrollData(empPayrollData._id));
+        }
+    }
+    else{
+        employeePayrollList = [createEmployeePayrollData()];
+    }
+    localStorage.setItem("EmployeePayrollList", JSON.stringify(employeePayrollList));
+}
+
+const createEmployeePayrollData = (id) => {
+    let employeePayrollData = new EmployeePayrollData();
+    if(!id){
+        employeePayrollData.id = createNewEmployeeId();
+    }
+    else{
+        employeePayrollData.id = id;
+    }
+    setEmployeePayrollData(employeePayrollData);
+    return employeePayrollData;
+}
+
+const setEmployeePayrollData = (employeePayrollData) => {
+    try{
+        employeePayrollData.name = employeePayrollObj._name;
+    }catch(e){
+        setTextValue('.text-error',e);
+        throw e;
+    }
+
+    employeePayrollData.profilepic = employeePayrollObj._profilepic;
+    employeePayrollData.gender = employeePayrollObj._gender;
+    employeePayrollData.department = employeePayrollObj._department;
+    employeePayrollData.salary = employeePayrollObj._salary;
+    employeePayrollData.note = employeePayrollObj._note;
+    employeePayrollData.startDate = new Date(Date.parse(employeePayrollObj._startDate));
+    // try{
+    //     employeePayrollData.startDate = new Date(Date.parse(employeePayrollObj._startDate));
+    // }catch(e){
+    //     setTextValue('.date-error', e);
+    //     throw e;
+    // }
+    alert(employeePayrollData.toString());
+}
+
+const createNewEmployeeId = () => {
+    let empID = localStorage.getItem("EmployeeID");
+    empID = !empID ? 1 : (parseInt(empID) + 1).toString();
+    localStorage.setItem("EmployeeID",empID);
+    return empID;
+}
+
+const getSelectedValues = (propertyValue,value) => {
+    let allItems = document.querySelectorAll(propertyValue);
+    let selItems = [];
+    allItems.forEach(item => {
+        if(item.checked){
+            selItems.push(item.value);
+        }
+    });
+    return selItems;
+}
+// UC-22 TILL HERE
+
 const setSelectedValues = (propertyValue, value) => {
     let allItems = document.querySelectorAll(propertyValue);
     allItems.forEach(item => {
@@ -109,17 +176,6 @@ const setSelectedValues = (propertyValue, value) => {
             item.checked = true;
         }
     });
-}
-
-const getSelectedValues = (propertyValue) => {
-    let allItems = document.querySelectorAll(propertyValue);
-    let selItems = [];
-    allItems.forEach(item => {
-        if(item.checked){
-            selItems.push(item.value);
-        }
-    });
-    return selItems;
 }
 
 const getInputValuesById = (id) => {
